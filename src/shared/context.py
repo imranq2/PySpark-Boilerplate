@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from tabulate import tabulate
 
+
 class JobContext(object):
     def __init__(self, sc):
         self.counters = OrderedDict()
@@ -23,4 +24,4 @@ class JobContext(object):
         self.counters[name] += value
 
     def print_accumulators(self):
-        print tabulate(self.counters.items(), self.counters.keys(), tablefmt="simple")
+        print (tabulate(self.counters.items(), self.counters.keys(), tablefmt="simple"))

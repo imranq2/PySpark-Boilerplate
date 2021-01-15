@@ -13,6 +13,7 @@ all: default
 default: clean dev_deps deps build
 
 .venv:
+	. $(VENV_NAME)/bin/activate
 	#if [ ! -e ".venv/bin/activate_this.py" ] ; then virtualenv --clear .venv ; fi
 
 VENV_NAME=venv
@@ -68,4 +69,4 @@ down:
 	docker-compose -p boilerplate -f docker-compose.yml down
 
 run:
-	cd dist && /usr/local/opt/spark/bin/spark-submit --py-files jobs.zip main.py --job wordcount
+	cd dist && /usr/local/opt/spark/bin/spark-submit --py-files jobs.zip,libs.zip main.py --job wordcount
