@@ -10,10 +10,19 @@ help:
 
 all: default
 
-default: clean dev_deps deps test lint build
+default: clean dev_deps deps build
 
 .venv:
-	if [ ! -e ".venv/bin/activate_this.py" ] ; then virtualenv --clear .venv ; fi
+	#if [ ! -e ".venv/bin/activate_this.py" ] ; then virtualenv --clear .venv ; fi
+
+VENV_NAME=venv
+PYTHON_VERSION=3.6.11
+
+.PHONY:venv
+venv:
+	~/.pyenv/versions/${PYTHON_VERSION}/bin/python3 -m venv $(VENV_NAME) && \
+	. $(VENV_NAME)/bin/activate && \
+	python -V
 
 clean: clean-build clean-pyc clean-test
 
@@ -32,19 +41,31 @@ clean-test:
 	rm -fr htmlcov/
 
 deps: .venv
-	. .venv/bin/activate && pip install -U -r requirements.txt -t ./src/libs
+	pip install -U -r requirements.txt -t ./src/libs
 
 dev_deps: .venv
-	. .venv/bin/activate && pip install -U -r dev_requirements.txt
+	pip install -U -r dev_requirements.txt
 
 lint:
-	. .venv/bin/activate && pylint -r n src/main.py src/shared src/jobs tests
+	pylint -r n src/main.py src/shared src/jobs tests
 
 test:
-	. .venv/bin/activate && nosetests ./tests/* --config=.noserc
+	nosetests ./tests/* --config=.noserc
 
 build: clean
 	mkdir ./dist
 	cp ./src/main.py ./dist
 	cd ./src && zip -x main.py -x \*libs\* -r ../dist/jobs.zip .
 	cd ./src/libs && zip -r ../../dist/libs.zip .
+
+
+.PHONY:up
+up:
+	docker-compose -p boilerplate -f docker-compose.yml up --detach
+
+.PHONY:down
+down:
+	docker-compose -p boilerplate -f docker-compose.yml down
+
+run:
+	cd dist && /usr/local/opt/spark/bin/spark-submit --py-files jobs.zip main.py --job wordcount
