@@ -69,4 +69,4 @@ down:
 	docker-compose -p boilerplate -f docker-compose.yml down
 
 run:
-	cd dist && /usr/local/opt/spark/bin/spark-submit --py-files jobs.zip,libs.zip main.py --job wordcount
+	cd dist && /usr/local/opt/spark/bin/spark-submit --master spark://localhost:7077 --py-files jobs.zip,libs.zip main.py --job wordcount
