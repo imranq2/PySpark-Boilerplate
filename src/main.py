@@ -1,21 +1,20 @@
-#!/usr/bin/python
 import argparse
-import importlib
-import time
 import os
-import sys
-
-if os.path.exists('libs.zip'):
-    sys.path.insert(0, 'libs.zip')
-else:
-    sys.path.insert(0, './libs')
-
-if os.path.exists('jobs.zip'):
-    sys.path.insert(0, 'jobs.zip')
-else:
-    sys.path.insert(0, './jobs')
+import time
 
 # pylint:disable=E0401
+from src.jobs import wordcount
+
+# if os.path.exists('libs.zip'):
+#     sys.path.insert(0, 'libs.zip')
+# else:
+#     sys.path.insert(0, './libs')
+#
+# if os.path.exists('jobs.zip'):
+#     sys.path.insert(0, 'jobs.zip')
+# else:
+#     sys.path.insert(0, './jobs')
+
 try:
     import pyspark
 except:
@@ -48,10 +47,11 @@ if __name__ == '__main__':
 
     os.environ.update(environment)
     sc = pyspark.SparkContext(appName=args.job_name, environment=environment)
-    job_module = importlib.import_module('jobs.%s' % args.job_name)
+    # job_module = importlib.import_module('jobs.%s' % args.job_name)
 
     start = time.time()
-    job_module.analyze(sc, **job_args)
+    # job_module.analyze(sc, **job_args)
+    wordcount.analyze(sc)
     end = time.time()
 
     print ("\nExecution of job %s took %s seconds" % (args.job_name, end-start))

@@ -1,8 +1,9 @@
 import re
 from functools import partial
-from shared.context import JobContext
 
 __author__ = 'ekampf'
+
+from src.shared.context import JobContext
 
 
 class WordCountJobContext(JobContext):

@@ -4,22 +4,20 @@ USER root
 ENV PYTHONPATH=/helix.pipelines:/usr/local/lib/python3.7/dist-packages
 ENV CLASSPATH=/helix.pipelines/jars:$CLASSPATH
 
-RUN echo "deb-src http://deb.debian.org/debian buster main" >> /etc/apt/sources.list
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
+#RUN echo "deb-src http://deb.debian.org/debian buster main" >> /etc/apt/sources.list
+#ENV LC_ALL=C.UTF-8
+#ENV LANG=C.UTF-8
 
 ENV PYSPARK_MAJOR_PYTHON_VERSION=3
 
-RUN apt update && apt build-dep -y python3 && apt install git -y && git --version && apt-get clean
-
-RUN apt-get update \
- && apt-get install -y curl unzip \
-    python3 python3-setuptools \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
-
-RUN ls /usr/bin/
-
+#RUN apt update && apt build-dep -y python3 && apt install git -y && git --version && apt-get clean
+#
+#RUN apt-get update \
+# && apt-get install -y curl unzip \
+#    python3 python3-setuptools \
+# && apt-get clean \
+# && rm -rf /var/lib/apt/lists/*
+#
 RUN pip3 install --upgrade --no-cache-dir pip && \
     pip3 install --no-cache-dir wheel && \
     pip3 install --no-cache-dir pre-commit && \
